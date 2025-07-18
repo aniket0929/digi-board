@@ -51,6 +51,17 @@ export const remove=mutation({
             throw new Error("Unauthorized")
         }
         //todo
+        const userId=identity.subject;
+        const exisitingFavourite=await ctx.db
+        .query("userFavourites")
+        .withIndex("by_user_board",(q)=>
+        q.
+        eq("userId",userId)
+    .eq("boardId",args.id)).unique();
+
+    if(exisitingFavourite){
+        await ctx.db.delete(exisitingFavourite._id)
+    }
 
         await ctx.db.delete(args.id);   
 
@@ -89,4 +100,92 @@ export const update=mutation({
         })
         return board;
     }
+})
+
+///make board favourite 
+export const favourite=mutation({
+    args:{
+        id:v.id("boards"),
+        orgId:v.string()
+    },
+    handler:async(ctx,args)=>{
+        const identity=await ctx.auth.getUserIdentity()
+
+          if(!identity){
+            throw new Error("Unauthorized")
+        }
+        //fetvh yhr board
+        const board=await ctx.db.get(args.id)
+
+           if(!board){
+            throw new Error("Board not found")
+        }
+
+            const userId=identity.subject;
+
+            const exisitingFavourite=await ctx.db
+            .query("userFavourites")
+            .withIndex("by_user_board",(q)=>
+            q
+            .eq("userId",userId)
+            .eq("boardId",board._id)
+
+            ).unique();
+
+            if(exisitingFavourite){
+                throw new Error("Board already favourited ")
+            }
+
+             //make favorite'
+             await ctx.db.insert("userFavourites",{
+                userId,
+                boardId:board._id,
+                orgId:args.orgId
+             })
+
+             return board;
+        }
+})
+
+
+//make user unfavouritr
+
+export const unFavourite=mutation({
+    args:{
+        id:v.id("boards"),
+        orgId:v.string()
+    },
+    handler:async(ctx,args)=>{
+        const identity=await ctx.auth.getUserIdentity()
+
+          if(!identity){
+            throw new Error("Unauthorized")
+        }
+        //fetvh yhr board
+        const board=await ctx.db.get(args.id)
+
+           if(!board){
+            throw new Error("Board not found")
+        }
+
+            const userId=identity.subject;
+
+            const exisitingFavourite=await ctx.db.query("userFavourites")
+            .withIndex("by_user_board_org",(q)=>
+            q
+            .eq("userId",userId)
+            .eq("boardId",board._id)
+            .eq("orgId",args.orgId)
+
+            ).unique();
+
+            if(!exisitingFavourite){
+                throw new Error("No favourite board found")
+            }
+
+             //make favorite'
+             await ctx.db.delete(exisitingFavourite._id)
+
+             return board;
+        }
 })
