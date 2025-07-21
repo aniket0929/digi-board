@@ -17,7 +17,7 @@ interface BoardListProps{
 }
 
 const BoardList = ({orgId,query}:BoardListProps) => {
-    const data=useQuery(api.boards.get,{orgId}) //todo
+    const data=useQuery(api.boards.get,{orgId,...query,}) 
     //no data ength bt user serch for something that doesnt exist
     if(data === undefined ){
 return  <div>
