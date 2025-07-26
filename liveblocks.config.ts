@@ -4,7 +4,7 @@
 import { createClient } from "@liveblocks/client";
 
 export const client = createClient({
-  publicApiKey: "pk_dev_5oqm00PVZ-etxeYwXxDNefQhgJ1wnj7iTOK25EEQSgglHkAtFdArG4NZ0kbS8pG3",
+  authEndpoint: "/api/liveblocks-auth",
 });
 
 
@@ -24,11 +24,11 @@ declare global {
 
     // Custom user info set when authenticating with a secret key
     UserMeta: {
-      id: string;
-      info: {
+      id?: string;
+      info?: {
         // Example properties, for useSelf, useUser, useOthers, etc.
-        // name: string;
-        // avatar: string;
+        name?: string;
+        picture?: string;
       };
     };
 
