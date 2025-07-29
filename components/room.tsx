@@ -8,7 +8,8 @@ import {
   
 
 } from "@liveblocks/react/suspense";
-
+import { LiveList, LiveMap, LiveObject } from "@liveblocks/client";
+import { Layer } from "@/types/canvas";
 interface RoomProps{
   children:ReactNode
   roomId:string
@@ -19,7 +20,15 @@ interface RoomProps{
 export function Room({ children ,roomId,fallback}: RoomProps) {
   return (
     <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
-      <RoomProvider id={roomId} initialPresence={{}}>  
+      <RoomProvider id={roomId} initialPresence={{
+        cursor:null ,
+        selection:[]
+      }}
+      initialStorage={{
+        layers: new LiveMap<string,LiveObject<Layer>>(),
+        //added empty array becoz of the error 
+        layerIds:new LiveList([])
+      }}>  
         <ClientSideSuspense fallback={fallback}>
           {children}
         </ClientSideSuspense>
