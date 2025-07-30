@@ -1,3 +1,4 @@
+import { colorToCss } from "@/lib/utils";
 import { RectangleLayer } from "@/types/canvas";
 
 interface RectangleProps{
@@ -16,15 +17,15 @@ export const Rectangle=({id,layer,onPointerDown,selectionColor}:RectangleProps)=
             className="drop-shadow-md"
             onPointerDown={(e)=>onPointerDown(e,id)}
             style={{
-                transform:`translate(${x}px,${y}py)`
+                transform:`translate(${x}px,${y}px)`
             }}
             ///hardcode kelya values to show  it on those co-ordinates
-            x={x}
-            y={y}
+            x={0}
+            y={0}
             width={width}
             height={height}
             strokeWidth={1}
-            fill="#000000"
-            stroke="transparent"/>
+            fill={fill? colorToCss(fill) : "#000"}
+            stroke={selectionColor || "transparent"}/>
         )
 }
