@@ -56,7 +56,8 @@ export const SelectionBox=memo(({onResizeHandlePointerDown}:SelectionBoxProps)=>
                 }}
                 onPointerDown={(e)=>{
                     e.stopPropagation();
-                    //toodoo: add resize handler
+                    // add resize handler
+                    onResizeHandlePointerDown(Side.Top + Side.Left,bounds)
                 }}
                 />
 
@@ -73,7 +74,9 @@ export const SelectionBox=memo(({onResizeHandlePointerDown}:SelectionBoxProps)=>
                 }}
                 onPointerDown={(e)=>{
                     e.stopPropagation();
-                    //toodoo: add resize handler
+                    // add resize handler
+                    onResizeHandlePointerDown(Side.Top ,bounds)
+
                 }}
                 />
                 {/* //toprrigghtcorner */}
@@ -89,7 +92,9 @@ export const SelectionBox=memo(({onResizeHandlePointerDown}:SelectionBoxProps)=>
                 }}
                 onPointerDown={(e)=>{
                     e.stopPropagation();
-                    //toodoo: add resize handler
+                    //add resize handler
+                onResizeHandlePointerDown(Side.Top + Side.Right,bounds)
+
                 }}
                 />
 
@@ -106,7 +111,9 @@ export const SelectionBox=memo(({onResizeHandlePointerDown}:SelectionBoxProps)=>
                 }}
                 onPointerDown={(e)=>{
                     e.stopPropagation();
-                    //toodoo: add resize handler
+                    // add resize handler
+                onResizeHandlePointerDown(Side.Right,bounds)
+
                 }}
                 />
 
@@ -117,14 +124,16 @@ export const SelectionBox=memo(({onResizeHandlePointerDown}:SelectionBoxProps)=>
                 x={0}
                 y={0}
                 style={{
-                    cursor:"ew-resize",
+                    cursor:"se-resize",
                     width:`${HANDLE_WIDTH}px`,
                     height:`${HANDLE_WIDTH}px`,
                     transform:`translate(${bounds.x - HANDLE_WIDTH / 2 + bounds.width}px,${bounds.y + bounds.height- HANDLE_WIDTH/2}px)`
                 }}
                 onPointerDown={(e)=>{
                     e.stopPropagation();
-                    //toodoo: add resize handler
+                    // add resize handler
+                onResizeHandlePointerDown(Side.Bottom + Side.Right,bounds)
+
                 }}
                 />
                 {/* bottom mid */}
@@ -140,26 +149,30 @@ export const SelectionBox=memo(({onResizeHandlePointerDown}:SelectionBoxProps)=>
                 }}
                 onPointerDown={(e)=>{
                     e.stopPropagation();
-                    //toodoo: add resize handler
+                    // add resize handler
+                onResizeHandlePointerDown(Side.Bottom,bounds)
+
                 }}
                 />
 
-                {/* //bottomleft cornee */}
-                <rect
-                 className="fill-white stroke-2 stroke-blue-500"
-                x={0}
-                y={0}
-                style={{
-                    cursor:"nesw-resize",
-                    width:`${HANDLE_WIDTH}px`,
-                    height:`${HANDLE_WIDTH}px`,
-                    transform:`translate(${bounds.x - HANDLE_WIDTH/2}px,${bounds.y + bounds.height- HANDLE_WIDTH/2}px)`
-                }}
-                onPointerDown={(e)=>{
-                    e.stopPropagation();
-                    //toodoo: add resize handler
-                }}
-                />
+                    {/* //bottomleft cornee */}
+                    <rect
+                    className="fill-white stroke-2 stroke-blue-500"
+                    x={0}
+                    y={0}
+                    style={{
+                        cursor:"sw-resize",
+                        width:`${HANDLE_WIDTH}px`,
+                        height:`${HANDLE_WIDTH}px`,
+                        transform:`translate(${bounds.x - HANDLE_WIDTH/2}px,${bounds.y + bounds.height- HANDLE_WIDTH/2}px)`
+                    }}
+                    onPointerDown={(e)=>{
+                        e.stopPropagation();
+                        // add resize handler
+                    onResizeHandlePointerDown(Side.Bottom + Side.Left,bounds)
+
+                    }}
+                    />
 
                 {/* left mid */}
 
@@ -168,14 +181,16 @@ export const SelectionBox=memo(({onResizeHandlePointerDown}:SelectionBoxProps)=>
                 x={0}
                 y={0}
                 style={{
-                    cursor:"nesw-resize",
+                    cursor:"ew-resize",
                     width:`${HANDLE_WIDTH}px`,
                     height:`${HANDLE_WIDTH}px`,
                     transform:`translate(${bounds.x - HANDLE_WIDTH/2}px,${bounds.y + bounds.height/2- HANDLE_WIDTH/2}px)`
                 }}
                 onPointerDown={(e)=>{
                     e.stopPropagation();
-                    //toodoo: add resize handler
+                    //: add resize handler
+                    onResizeHandlePointerDown(Side.Left,bounds)
+
                 }}
                 />
 
