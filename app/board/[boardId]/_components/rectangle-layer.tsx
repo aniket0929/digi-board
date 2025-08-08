@@ -19,7 +19,6 @@ export const Rectangle=({id,layer,onPointerDown,selectionColor}:RectangleProps)=
             style={{
                 transform:`translate(${x}px,${y}px)`
             }}
-            ///hardcode kelya values to show  it on those co-ordinates
             x={0}
             y={0}
             width={width}
