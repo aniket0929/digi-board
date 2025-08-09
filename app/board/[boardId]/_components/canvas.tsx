@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import Info from './info'
 import Participants from './participants'
 import Toolbar from './toolbar'
@@ -17,7 +17,9 @@ import { SelectionBox } from './selection-box'
 import { SelectionTools } from './selection-tools'
 import { Path } from './path-layer'
 import { useDisableScrollBounce } from '@/hooks/use-disable-scroll-bounce'
-import { useDeleteLayers } from '@/hooks/use-delete-layers'
+
+// for the useeffect where we will delete layrs when we press certain  keys
+// import { useDeleteLayers } from '@/hooks/use-delete-layers'
 
 //max no of lsyers 
 const MAX_LAYERS=1000;
@@ -332,7 +334,7 @@ const Canvas = ({boardId}:CanvasProps) => {
     }
 
     setCanvasState({origin:point,mode:CanvasMode.Pressing})
-  },[camera,canvasState.mode,setCanvasState]
+  },[camera,canvasState.mode,setCanvasState,startDrawing]
 
   )
 
@@ -423,9 +425,10 @@ const Canvas = ({boardId}:CanvasProps) => {
   },[selections])
 
   //
-  const deleteLayers=useDeleteLayers();
+ 
 
   // TODO:ADD KEYLISTENERS
+   // const deleteLayers=useDeleteLayers();
 
     //use keys to undo : ctrl+z to undo and ctrl+shift+z to redo 
     // useEffect(()=>{
