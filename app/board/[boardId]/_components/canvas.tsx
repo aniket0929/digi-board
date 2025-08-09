@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Info from './info'
 import Participants from './participants'
 import Toolbar from './toolbar'
@@ -16,6 +16,8 @@ import { LayerPreview } from './layer-preview'
 import { SelectionBox } from './selection-box'
 import { SelectionTools } from './selection-tools'
 import { Path } from './path-layer'
+import { useDisableScrollBounce } from '@/hooks/use-disable-scroll-bounce'
+import { useDeleteLayers } from '@/hooks/use-delete-layers'
 
 //max no of lsyers 
 const MAX_LAYERS=1000;
@@ -43,6 +45,10 @@ const Canvas = ({boardId}:CanvasProps) => {
     b:0
   })
   const [camera,setCamera]=useState<Camera>({x:0,y:0})
+
+
+
+  useDisableScrollBounce()
   //
   const history=useHistory();
   const canUndo=useCanUndo();
@@ -212,7 +218,7 @@ const Canvas = ({boardId}:CanvasProps) => {
       const {pencilDraft}=self.presence;
       
       if(pencilDraft==null ||
-        pencilDraft.length >2 || 
+        pencilDraft.length <2 || 
         liveLayers.size>=MAX_LAYERS
       ){
         setMyPresence({pencilDraft:null});
@@ -297,9 +303,8 @@ const Canvas = ({boardId}:CanvasProps) => {
     } //resize the selected lyer 
     else if(canvasState.mode===CanvasMode.Resizing){
       resizeSelectedLayer(current)
-    }
-    else if(canvasState.mode===CanvasMode.Pencil){
-      continueDrawing(current,e)
+    }else if(canvasState.mode===CanvasMode.Pencil){
+      continueDrawing(current,e);
     }
 
     setMyPresence({cursor:current})
@@ -309,8 +314,6 @@ const Canvas = ({boardId}:CanvasProps) => {
 
    const onPointerLeave=useMutation(({setMyPresence},e:React.PointerEvent)=>{
     e.preventDefault();
-
-
     setMyPresence({cursor:null})
   },[])
 
@@ -345,11 +348,9 @@ const Canvas = ({boardId}:CanvasProps) => {
       setCanvasState({
         mode:CanvasMode.None,
       })
-    }
-    else if(canvasState.mode===CanvasMode.Pencil){
+    }else if(canvasState.mode===CanvasMode.Pencil){
       insertPath();
-    }
-    else if(canvasState.mode===CanvasMode.Inserting){
+    }else if(canvasState.mode===CanvasMode.Inserting){
       insertLayer(canvasState.layerType,point)
     }else{
       setCanvasState({
@@ -420,6 +421,35 @@ const Canvas = ({boardId}:CanvasProps) => {
 
    return layerIdsToColorSelection;
   },[selections])
+
+  //
+  const deleteLayers=useDeleteLayers();
+
+  // TODO:ADD KEYLISTENERS
+
+    //use keys to undo : ctrl+z to undo and ctrl+shift+z to redo 
+    // useEffect(()=>{
+  //     function onKeyDown(e:KeyboardEvent){
+  //       switch(e.key){
+  //         case "z":{
+  //           if(e.ctrlKey || e.metaKey ){
+  //             if(e.shiftKey){
+  //               history.redo();
+  //             }else{
+  //               history.undo();
+  //             }
+  //             break;
+  //           }
+  //         }
+  //       }
+  //     }
+  //     document.addEventListener("keydown",onKeyDown)
+
+  //     return()=>{
+  //       document.removeEventListener("keydown",onKeyDown)
+  //     }
+
+  // },[deleteLayers,history])
 
 
   return (
