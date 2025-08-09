@@ -7,6 +7,8 @@ import { Rectangle } from "./rectangle-layer";
 import { Ellipse } from "./ellipse-layer";
 import { Text } from "./text-layer";
 import { Note } from "./note-layer";
+import { Path } from "./path-layer";
+import { colorToCss } from "@/lib/utils";
 
 interface LayerPreviewProps{
  id:string;
@@ -30,6 +32,20 @@ export const LayerPreview=memo(({
    
     ///
     switch(layer.type){
+        case LayerType.Path:
+            return(
+             
+                <Path
+                key={id}
+                points={layer.points}
+                onPointerDown={(e)=>onLayerPointerDown(e,id)}
+                stroke={selectionColor}
+                x={layer.x}
+                y={layer.y}
+                fill={layer.fill ? colorToCss(layer.fill) : "#000"}
+                />
+              
+            );
         case LayerType.Note:
             return(
              
